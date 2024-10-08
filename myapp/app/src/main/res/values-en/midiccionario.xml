@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="words">
-        <item>home</item>
-        <item>family</item>
-        <item>bird</item>
-    </string-array>
-
-</resources>

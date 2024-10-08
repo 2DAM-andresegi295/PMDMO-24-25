@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">My Application</string>
-    <!-- Control de ciclo de vida de la app-->
-    <string name="create">Binvenido a la app</string>
-    <string name="stop">Parando app</string>
-    <string name="restart">App restaurada</string>
-</resources>
