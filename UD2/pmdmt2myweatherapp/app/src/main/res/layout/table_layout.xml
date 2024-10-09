@@ -3,6 +3,7 @@
     android:id="@+id/Tabla"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.AppCompat.DayNight"
     android:stretchColumns="*">
     <TableRow
         android:id="@+id/Cabecera"
@@ -14,7 +15,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:padding="5dp"
-            android:text="Temperaturas"
+            android:text="@string/temperaturas"
             android:textStyle="bold"
             android:textSize="18dp"
             android:layout_span="6"
@@ -97,7 +98,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
-            android:text="Máximas"
+            android:text="@string/m_ximas"
             android:padding="5dp"
             android:textStyle="bold">
         </TextView>
@@ -152,7 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Mínimas"
+            android:text="@string/m_nimas"
             android:padding="5dp"
             android:textStyle="bold">
         </TextView>
@@ -207,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Estado"
+            android:text="@string/estado"
             android:padding="5dp"
             android:textStyle="bold">
         </TextView>

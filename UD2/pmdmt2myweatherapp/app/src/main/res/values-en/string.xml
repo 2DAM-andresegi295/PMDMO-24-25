@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">MyWeather App</string>
+    <string name="temperaturas" >Temperature</string>
+    <string name="m_ximas">Maxims</string>
+    <string name="m_nimas">Minimum</string>
+    <string name="estado">State</string>
+</resources>
