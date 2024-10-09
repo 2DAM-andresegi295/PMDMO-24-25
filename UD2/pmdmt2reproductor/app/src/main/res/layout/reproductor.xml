@@ -1,69 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/Tabla"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:layout_weight="1"
-    android:stretchColumns="*">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
-    <LinearLayout
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:padding="5dp"
+            android:layout_margin="20dp">
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="Do"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/rojo"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="RE"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/naranja"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="Mi"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/amarillo"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button4"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="Fa"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/verde"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button5"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="Sol"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/celeste"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button6"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="La"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/marino"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button7"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
-
+                android:layout_gravity="center"
+                android:text="Si"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/morado"
+                android:drawableTop="@drawable/estrella">
+            </Button>
             <Button
-                android:id="@+id/button8"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="Button" />
+                android:layout_gravity="center"
+                android:text="Do+"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/lila"
+                android:drawableTop="@drawable/estrella">
+            </Button>
         </LinearLayout>
-</HorizontalScrollView>
+    </HorizontalScrollView>
+
+</RelativeLayout>
