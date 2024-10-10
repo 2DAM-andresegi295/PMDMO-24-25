@@ -1,19 +1,22 @@
 package iesmm.pmdm.pmdm_t2_reproductor;
 
 import android.media.MediaPlayer;
+import android.nfc.Tag;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    int score=0;
+    private static final String TAG = "LogSistema";
+    int score;
+    String secuencia_secreta;
+    String secuencia_introducida;
     MediaPlayer do1;
     MediaPlayer re;
     MediaPlayer mi;
@@ -22,10 +25,17 @@ public class MainActivity extends AppCompatActivity {
     MediaPlayer la;
     MediaPlayer si;
     MediaPlayer do2;
+    MediaPlayer gasolina;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reproductor);
+        Log.i(TAG,"Se ha iniciado");
+
+        score=0;
+        secuencia_secreta ="DoReMiFaSolLaSiDo2";
+        secuencia_introducida="";
+
         Button[] boton= new Button[8];
 
         do1=MediaPlayer.create(this,R.raw.do1);
@@ -36,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         la=MediaPlayer.create(this,R.raw.la);
         si=MediaPlayer.create(this,R.raw.si);
         do2=MediaPlayer.create(this,R.raw.do2);
+        gasolina=MediaPlayer.create(this,R.raw.gasolina);
 
         boton[0]=findViewById(R.id.botonDo);
         boton[1]=findViewById(R.id.botonRe);
@@ -52,44 +63,59 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     score++;
+                    Log.i(TAG,"Se ha pulsado una tecla");
+                    Log.i(TAG,"Score: "+score);
                     Toast.makeText(MainActivity.this, "Has pulsado " + (score) + " los botones", Toast.LENGTH_SHORT).show();
                     switch (j){
                         case 0:
                             do1.start();
+                            secuencia_introducida=secuencia_introducida+"Do";
                             break;
                         case 1:
                             re.start();
+                            secuencia_introducida=secuencia_introducida+"Re";
                             break;
                         case 2:
                             mi.start();
+                            secuencia_introducida=secuencia_introducida+"Mi";
                             break;
                         case 3:
                             fa.start();
+                            secuencia_introducida=secuencia_introducida+"Fa";
                             break;
                         case 4:
                             sol.start();
+                            secuencia_introducida=secuencia_introducida+"Sol";
                             break;
                         case 5:
                             la.start();
+                            secuencia_introducida=secuencia_introducida+"La";
                             break;
                         case 6:
                             si.start();
+                            secuencia_introducida=secuencia_introducida+"Si";
                             break;
                         case 7:
                             do2.start();
+                            secuencia_introducida=secuencia_introducida+"Do2";
                             break;
+                    }
+                    if (Objects.equals(secuencia_introducida, secuencia_secreta)){
+                        Log.i(TAG,"Secuencia correcta");
+                        Toast.makeText(MainActivity.this,"Has introducido la secuencia correcta", Toast.LENGTH_SHORT).show();
+                        gasolina.start();
+                        score=0;
+                        secuencia_introducida="";
                     }
                 }
             });
         }
-
-
-
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i(TAG,"Se ha reiniciado");
         score=0;
     }
 }
