@@ -1,5 +1,9 @@
 package iesmm.pmdm.tresenralla;
 
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
 import java.util.Random;
 
 public class JuegoTresEnRaya {
@@ -17,6 +21,29 @@ public class JuegoTresEnRaya {
     // Estructura de dato del tablero
     private char tablero[];
 
+    //Representa el estado interno del juego
+    private JuegoTresEnRaya mJuego;
+
+    //Botones del layout
+    private Button mBotonesTablero[];
+
+    //Texto inforativo del estado del juego
+    private TextView mInfoTexto;
+
+    //Determina quien será primer turno (TURNO INICIAL)
+    private char mTurno=JuegoTresEnRaya.JUGADOR;
+
+    //Determina si se ha acabado el juego
+    private boolean gameOver=false;
+
+    private void comenzarJuego(){}
+    private void completarTurno(){}
+    private void colocarFichaEnElTablero(){}
+    private int comprobarEstadoJuego(){
+        return 0;
+    }
+    private void gameOver(){}
+    private void onClick(View boton){}
     public JuegoTresEnRaya() {
         tablero = new char[DIM_TABLERO];
         aleatorio = new Random();
