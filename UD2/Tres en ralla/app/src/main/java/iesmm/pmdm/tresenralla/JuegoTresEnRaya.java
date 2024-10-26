@@ -19,7 +19,7 @@ public class JuegoTresEnRaya {
     private Random aleatorio;
 
     // Estructura de dato del tablero
-    private char tablero[];
+    private char[] tablero;
 
     //Representa el estado interno del juego
     private JuegoTresEnRaya mJuego;
