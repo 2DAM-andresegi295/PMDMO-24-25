@@ -177,6 +177,7 @@ public class JuegoTresEnRaya {
 
         do {
             casilla = aleatorio.nextInt(9);
+
         } while (tablero[casilla] == JUGADOR || tablero[casilla] == MAQUINA);
 
         return casilla;

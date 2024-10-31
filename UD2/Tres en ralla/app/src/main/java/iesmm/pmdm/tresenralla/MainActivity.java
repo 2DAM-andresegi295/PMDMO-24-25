@@ -1,18 +1,11 @@
 package iesmm.pmdm.tresenralla;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     //Representa el estado interno del juego
@@ -83,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if (mTurno==JuegoTresEnRaya.JUGADOR)
             mInfoTexto.setText(R.string.primero_jugador);
 
-         else if (mTurno == JuegoTresEnRaya.MAQUINA) {
+        else if (mTurno == JuegoTresEnRaya.MAQUINA) {
             //Determinamos la posicion segun nivel
             int casilla=mJuego.getMovimientoMaquina();
 
@@ -121,27 +114,27 @@ public class MainActivity extends AppCompatActivity {
         //Se comprueba: ESTADO DEL JUEGO (SI AUN NO SE HA ACABADO SE CONTINUA)
         int estadoJuego=comprobarEstadoJuego();
 
-        if (estadoJuego==1||estadoJuego==2){
+        if (estadoJuego==1||estadoJuego==2)
             gameOver();
-        } else if (estadoJuego == 0) {
-            if (jugador==JuegoTresEnRaya.JUGADOR){
+         else if (estadoJuego == 0) {
+            if (jugador==JuegoTresEnRaya.JUGADOR)
                 mTurno=JuegoTresEnRaya.MAQUINA;
-            } else if (jugador == JuegoTresEnRaya.MAQUINA) {
+             else if (jugador == JuegoTresEnRaya.MAQUINA)
                 mTurno=JuegoTresEnRaya.JUGADOR;
-            }
+
+            controlarTurno();
         }
-        controlarTurno();
+
     }
     private int comprobarEstadoJuego(){
         // 1 Comprobar el estado principal del tablero
         int estado= mJuego.comprobarGanador();
 
         // 2 representar estado del juego
-        if (estado==1){
+        if (estado==1)
             mInfoTexto.setText(R.string.result_human_wins);
-        } else if (estado==2) {
+        else if (estado==2)
             mInfoTexto.setText(R.string.result_computer_wins);
-        }
 
         return estado;
     }
@@ -183,5 +176,4 @@ public class MainActivity extends AppCompatActivity {
         mJugadorMediaPlayer.release();
         mBackgroundPlayer.release();
     }
-
 }
