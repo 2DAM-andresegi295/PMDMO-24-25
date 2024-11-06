@@ -154,9 +154,10 @@ public class JuegoTresEnRaya {
             i++;
         }
 
-        // Prioridad al jugador (si hay empate)
+        // Si no hay ganador devolverá 3 para poder diferenciar
+        //El turno lo empezará el ganador pero no le contará la partida
         if (!encontrado)
-            valor = 1;
+            valor = 3;
 
         return valor;
     }

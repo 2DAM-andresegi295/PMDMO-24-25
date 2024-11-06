@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Texto inforativo del estado del juego
     private TextView mInfoTexto;
+    private TextView scorejugador;
+    private TextView scoreMaquina;
+    private TextView scorePartidas;
 
     //Determina quien será primer turno (TURNO INICIAL)
     private char mTurno=JuegoTresEnRaya.JUGADOR;
@@ -26,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mJugadorMediaPlayer;
     private MediaPlayer mBackgroundPlayer;
+
+    private int scoJug =0;
+    private int scoMac =0;
+    private int scoPar =0;
 
 
     @Override
@@ -47,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Referencia de los textos informativos del estado del juego
         mInfoTexto=(TextView) findViewById(R.id.informacion);
+        scorejugador=findViewById(R.id.player_score);
+        scoreMaquina=findViewById(R.id.compter_score);
+        scorePartidas=findViewById(R.id.tie_score);
 
 
         //Ejecución inicial de la lógica del videojuego
@@ -64,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < mBotonesTablero.length; i++) {
             mBotonesTablero[i].setText("");
             mBotonesTablero[i].setEnabled(true);
+            mBotonesTablero[i].setBackgroundResource(R.drawable.border);
+
             //FUNCIÓN/OBJETO CALLBACK: Asocio evento al botón para JUGADOR
             //El evento está asociado desde la interfaz del layout XML
         }
-
-        //Turno iicial del juego: JUGADOR O MÁQUINA
+        //Turno inicial del juego: JUGADOR O MÁQUINA
         controlarTurno();
 
     }
@@ -102,12 +113,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Se representa la ficha
         if (jugador==JuegoTresEnRaya.JUGADOR){
-            //mBotonesTablero[casilla].setTextColor(Color.rgb(0,200,0));
             mBotonesTablero[casilla].setBackgroundResource(R.drawable.jugador);
             mJugadorMediaPlayer.start();
 
         }else {
-            //mBotonesTablero[casilla].setTextColor(Color.rgb(200,0,0));
             mBotonesTablero[casilla].setBackgroundResource(R.drawable.maquina);
         }
 
@@ -129,13 +138,25 @@ public class MainActivity extends AppCompatActivity {
     private int comprobarEstadoJuego(){
         // 1 Comprobar el estado principal del tablero
         int estado= mJuego.comprobarGanador();
-
         // 2 representar estado del juego
-        if (estado==1)
+        if (estado==1){
             mInfoTexto.setText(R.string.result_human_wins);
-        else if (estado==2)
-            mInfoTexto.setText(R.string.result_computer_wins);
+            scoJug++;
+            scorejugador.setText(String.valueOf(scoJug));
+            scoPar++;
+            scorePartidas.setText(String.valueOf(scoPar));
 
+        }else if (estado==2) {
+            mInfoTexto.setText(R.string.result_computer_wins);
+            scoMac++;
+            scoreMaquina.setText(String.valueOf(scoMac));
+            scoPar++;
+            scorePartidas.setText(String.valueOf(scoPar));
+        } else if (estado==3) {
+            scoPar++;
+            scorePartidas.setText(String.valueOf(scoPar));
+            estado=1;
+        }
         return estado;
     }
     private void gameOver(){
@@ -145,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < mBotonesTablero.length; i++) {
             mBotonesTablero[i].setEnabled(false);
         }
+        comenzarJuego();
     }
 
     public void onClick(View boton){
