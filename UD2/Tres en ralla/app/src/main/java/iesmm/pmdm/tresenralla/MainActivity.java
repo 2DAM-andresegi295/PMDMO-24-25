@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,12 +29,17 @@ public class MainActivity extends AppCompatActivity {
     //Determina si se ha acabado el juego
     private boolean gameOver=false;
 
+    //Marcadores de partidas, ganadas por jugador y ganadas por máquinas
     private MediaPlayer mJugadorMediaPlayer;
     private MediaPlayer mBackgroundPlayer;
-
     private int scoJug =0;
     private int scoMac =0;
     private int scoPar =0;
+
+    //Contador de turnos
+    int contTur=0;
+
+    Toast toast;
 
 
     @Override
@@ -53,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         mBotonesTablero[8]=(Button) findViewById(R.id.nine);
 
         //Referencia de los textos informativos del estado del juego
-        mInfoTexto=(TextView) findViewById(R.id.informacion);
+        mInfoTexto=findViewById(R.id.informacion);
         scorejugador=findViewById(R.id.player_score);
         scoreMaquina=findViewById(R.id.compter_score);
         scorePartidas=findViewById(R.id.tie_score);
@@ -84,10 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void controlarTurno(){
-        if (mTurno==JuegoTresEnRaya.JUGADOR)
+        if (mTurno==JuegoTresEnRaya.JUGADOR&&contTur==0) {
             mInfoTexto.setText(R.string.primero_jugador);
-
-        else if (mTurno == JuegoTresEnRaya.MAQUINA) {
+        } else if (mTurno == JuegoTresEnRaya.JUGADOR) {
+            mInfoTexto.setText(R.string.turno_jugador);
+        } else if (mTurno == JuegoTresEnRaya.MAQUINA) {
             //Determinamos la posicion segun nivel
             int casilla=mJuego.getMovimientoMaquina();
 
@@ -97,9 +105,10 @@ public class MainActivity extends AppCompatActivity {
             //Actualizar turno: Jugador
             if (!gameOver){
                 mTurno=JuegoTresEnRaya.JUGADOR;
-                mInfoTexto.setText(R.string.turno_jugador);
+                //mInfoTexto.setText(R.string.turno_jugador);
             }
         }
+        contTur++;
     }
     private void colocarFichaEnElTablero(char jugador, int casilla){
         //Mueve la ficha según lógica
@@ -115,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
         if (jugador==JuegoTresEnRaya.JUGADOR){
             mBotonesTablero[casilla].setBackgroundResource(R.drawable.jugador);
             mJugadorMediaPlayer.start();
-
         }else {
             mBotonesTablero[casilla].setBackgroundResource(R.drawable.maquina);
         }
@@ -123,17 +131,18 @@ public class MainActivity extends AppCompatActivity {
         //Se comprueba: ESTADO DEL JUEGO (SI AUN NO SE HA ACABADO SE CONTINUA)
         int estadoJuego=comprobarEstadoJuego();
 
-        if (estadoJuego==1||estadoJuego==2)
+        if (estadoJuego==1||estadoJuego==2) {
             gameOver();
-         else if (estadoJuego == 0) {
+            contTur = 0;
+        }
+        else if (estadoJuego == 0) {
             if (jugador==JuegoTresEnRaya.JUGADOR)
                 mTurno=JuegoTresEnRaya.MAQUINA;
-             else if (jugador == JuegoTresEnRaya.MAQUINA)
+            else if (jugador == JuegoTresEnRaya.MAQUINA)
                 mTurno=JuegoTresEnRaya.JUGADOR;
 
             controlarTurno();
         }
-
     }
     private int comprobarEstadoJuego(){
         // 1 Comprobar el estado principal del tablero
@@ -141,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         // 2 representar estado del juego
         if (estado==1){
             mInfoTexto.setText(R.string.result_human_wins);
+            toast.makeText(getApplicationContext(),R.string.result_human_wins,Toast.LENGTH_SHORT);
+            toast.show();
             scoJug++;
             scorejugador.setText(String.valueOf(scoJug));
             scoPar++;
@@ -154,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
             scorePartidas.setText(String.valueOf(scoPar));
         } else if (estado==3) {
             scoPar++;
+            mInfoTexto.setText(R.string.result_tie);
             scorePartidas.setText(String.valueOf(scoPar));
             estado=1;
         }
