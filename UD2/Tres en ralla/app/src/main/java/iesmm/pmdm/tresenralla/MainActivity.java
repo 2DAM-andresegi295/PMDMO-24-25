@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             mInfoTexto.setText(R.string.turno_jugador);
         } else if (mTurno == JuegoTresEnRaya.MAQUINA) {
             //Determinamos la posicion segun nivel
-            int casilla=mJuego.getMovimientoMaquina();
+            int casilla=mJuego.getMovimientoMaquina(scoJug);
 
             //Actualización del layout
             colocarFichaEnElTablero(JuegoTresEnRaya.MAQUINA, casilla);
@@ -149,21 +149,20 @@ public class MainActivity extends AppCompatActivity {
         int estado= mJuego.comprobarGanador();
         // 2 representar estado del juego
         if (estado==1){
-            mInfoTexto.setText(R.string.result_human_wins);
-            toast.makeText(getApplicationContext(),R.string.result_human_wins,Toast.LENGTH_SHORT);
-            toast.show();
+            toast.makeText(MainActivity.this,R.string.result_human_wins,Toast.LENGTH_SHORT).show();
             scoJug++;
             scorejugador.setText(String.valueOf(scoJug));
             scoPar++;
             scorePartidas.setText(String.valueOf(scoPar));
 
         }else if (estado==2) {
-            mInfoTexto.setText(R.string.result_computer_wins);
+            toast.makeText(MainActivity.this,R.string.result_computer_wins,Toast.LENGTH_SHORT).show();
             scoMac++;
             scoreMaquina.setText(String.valueOf(scoMac));
             scoPar++;
             scorePartidas.setText(String.valueOf(scoPar));
         } else if (estado==3) {
+            toast.makeText(MainActivity.this,R.string.result_tie,Toast.LENGTH_SHORT).show();
             scoPar++;
             mInfoTexto.setText(R.string.result_tie);
             scorePartidas.setText(String.valueOf(scoPar));

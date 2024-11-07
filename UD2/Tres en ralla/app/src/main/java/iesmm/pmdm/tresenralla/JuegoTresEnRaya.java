@@ -167,9 +167,29 @@ public class JuegoTresEnRaya {
      *
      * @return El mejor movimiento que puede realizar MAQUINA.
      */
-    public int getMovimientoMaquina() {
+    public int getMovimientoMaquina(int scoJug) {
+        int resultado=-1;
         // NIVEL DE DIFICULTAD 1: MOVIMIENTO ALEATORIO
-        return getMovimientoMaquinaAleatorio();
+        if (scoJug<2){
+            resultado=getMovimientoMaquinaAleatorio();
+        } else if (scoJug>=2&&scoJug<4) {
+            resultado=getMovimientoFacil();
+            if (resultado==-1){
+                resultado=getMovimientoMaquinaAleatorio();
+            }
+        } else if (scoJug>=4&&scoJug<6) {
+            resultado=getMovimientoMedio();
+            if (resultado==-1){
+                resultado=getMovimientoMaquinaAleatorio();
+            }
+        } else {
+            resultado=getMovimientoDificil();
+            if (resultado==-1){
+                resultado=getMovimientoMaquinaAleatorio();
+            }
+        }
+
+        return resultado;
     }
 
     private int getMovimientoMaquinaAleatorio() {
@@ -183,6 +203,126 @@ public class JuegoTresEnRaya {
 
         return casilla;
     }
+    //Comprobamos si hay posibilidad de que una fila de la victoria a la máquina
+    public int getMovimientoFacil(){
+        int casilla=-1;
+        char[] tableroComprobar;
+        int con;
+        boolean encontrado;
+        for (int i = 0; i < tablero.length; i++) {
+            tableroComprobar=tablero.clone();
+            con=0;
+            encontrado=false;
+            if (tableroComprobar[i]==BLANCO){
+                tableroComprobar[i]=MAQUINA;
+                while (con<7&&!encontrado){
+                    if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+1]==MAQUINA&&tableroComprobar[con+2]==MAQUINA){
+                        casilla=i;
+                        encontrado=true;
+                    }
+                    con=con+3;
+                }
+            }
+            if (encontrado){
+                break;
+            }
+        }
+        return casilla;
+    }
+    //Comprobamos si hay posibilidad de que una fila o una columna den la victoria a la máquina
+    public int getMovimientoMedio(){
+        int casilla=-1;
+        char[] tableroComprobar;
+        int con;
+        boolean encontrado;
+        for (int i = 0; i < tablero.length; i++) {
+            tableroComprobar=tablero.clone();
+
+            encontrado=false;
+            if (tableroComprobar[i]==BLANCO){
+                tableroComprobar[i]=MAQUINA;
+                con=0;
+                while (con<7&&!encontrado){
+                    if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+1]==MAQUINA&&tableroComprobar[con+2]==MAQUINA){
+                        casilla=i;
+                        encontrado=true;
+                    }
+                    con=con+3;
+                }
+                if (encontrado){
+                    break;
+                }
+                con=0;
+                while (con<3&&!encontrado){
+                    if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+3]==MAQUINA&&tableroComprobar[con+6]==MAQUINA){
+                        casilla=i;
+                        encontrado=true;
+                    }
+                    con++;
+                }
+            }
+            if (encontrado){
+                break;
+            }
+        }
+        return casilla;
+    }
+    //Comprobamos si hay posibilidad de que una fila o una columna o una diagonal den la victoria a la máquina
+    public int getMovimientoDificil(){
+        int casilla=-1;
+        char[] tableroComprobar;
+        int con;
+        boolean encontrado;
+        for (int i = 0; i < tablero.length; i++) {
+            tableroComprobar=tablero.clone();
+
+            encontrado=false;
+            if (tableroComprobar[i]==BLANCO){
+                tableroComprobar[i]=MAQUINA;
+                con=0;
+                while (con<7&&!encontrado){
+                    if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+1]==MAQUINA&&tableroComprobar[con+2]==MAQUINA){
+                        casilla=i;
+                        encontrado=true;
+                    }
+                    con=con+3;
+                }
+                if (encontrado){
+                    break;
+                }
+                con=0;
+                while (con<3&&!encontrado){
+                    if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+3]==MAQUINA&&tableroComprobar[con+6]==MAQUINA){
+                        casilla=i;
+                        encontrado=true;
+                    }
+                    con++;
+                }
+                if (encontrado){
+                    break;
+                }
+
+                con=0;
+                if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+4]==MAQUINA&&tableroComprobar[con+8]==MAQUINA){
+                    casilla=i;
+                    encontrado=true;
+                }
+                if (encontrado){
+                    break;
+                }
+                con=2;
+                if (tableroComprobar[con]==MAQUINA&&tableroComprobar[con+2]==MAQUINA&&tableroComprobar[con+4]==MAQUINA){
+                    casilla=i;
+                    encontrado=true;
+                }
+
+            }
+
+
+        }
+        return casilla;
+    }
+
 
     @Override
     public String toString() {
@@ -191,7 +331,7 @@ public class JuegoTresEnRaya {
                 + tablero[6] + "|" + tablero[7] + "|" + tablero[8];
     }
 
-    public static void main(String[] params) {
+    /*public static void main(String[] params) {
         JuegoTresEnRaya juego = new JuegoTresEnRaya();
 
         // SIMULACIÓN DEL JUGADOR: Hacer diagonal de X (0-4-8)
@@ -201,7 +341,7 @@ public class JuegoTresEnRaya {
             System.out.println("CASILLA 0 OCUPADA");
 
         // Coloca ficha: MÁQUINA
-        juego.moverFicha('O', juego.getMovimientoMaquina());
+        juego.moverFicha('O', juego.getMovimientoMaquina(0));
         System.out.println("ESTADO: " + juego.comprobarGanador());
         System.out.println("NUEVO TABLERO: \n" + juego + "\n");
 
@@ -210,7 +350,7 @@ public class JuegoTresEnRaya {
             System.out.println("CASILLA 4 OCUPADA");
 
         // Coloca ficha: MÁQUINA
-        juego.moverFicha('O', juego.getMovimientoMaquina());
+        juego.moverFicha('O', juego.getMovimientoMaquina(0));
         System.out.println("ESTADO: " + juego.comprobarGanador());
         System.out.println("NUEVO TABLERO: \n" + juego + "\n");
 
@@ -219,8 +359,8 @@ public class JuegoTresEnRaya {
             System.out.println("CASILLA 8 OCUPADA");
 
         // Coloca ficha: MÁQUINA
-        juego.moverFicha('O', juego.getMovimientoMaquina());
+        juego.moverFicha('O', juego.getMovimientoMaquina(0));
         System.out.println("ESTADO: " + juego.comprobarGanador());
         System.out.println("NUEVO TABLERO: \n" + juego + "\n");
-    }
+    }*/
 }
