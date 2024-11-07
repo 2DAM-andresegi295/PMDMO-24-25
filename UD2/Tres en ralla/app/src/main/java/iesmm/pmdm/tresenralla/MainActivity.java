@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     //Marcadores de partidas, ganadas por jugador y ganadas por máquinas
     private MediaPlayer mJugadorMediaPlayer;
     private MediaPlayer mBackgroundPlayer;
-    private int scoJug =0;
-    private int scoMac =0;
-    private int scoPar =0;
+    private int scoJug=0;
+    private int scoMac=0;
+    private int scoPar=0;
 
     //Contador de turnos
     int contTur=0;
@@ -46,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        scoJug =0;
+        scoMac =0;
+        scoPar =0;
 
         //Referencia de los botones del tablero
         mBotonesTablero= new Button[JuegoTresEnRaya.DIM_TABLERO];
@@ -69,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //Ejecución inicial de la lógica del videojuego
         mJuego=new JuegoTresEnRaya();
         comenzarJuego();
-
     }
-
 
     private void comenzarJuego(){
         //Reinicio de la lógica del tablero
@@ -191,6 +192,16 @@ public class MainActivity extends AppCompatActivity {
             //Mueve y representa la ficha jugador en la casilla
             colocarFichaEnElTablero(JuegoTresEnRaya.JUGADOR, casilla);
         }
+    }
+    public void newGame(View boton){
+        scoJug=0;
+        scorejugador.setText(String.valueOf(scoJug));
+        scoMac=0;
+        scoreMaquina.setText(String.valueOf(scoJug));
+        scoPar=0;
+        scorePartidas.setText(String.valueOf(scoJug));
+
+        comenzarJuego();
     }
     @Override
     protected void onResume(){

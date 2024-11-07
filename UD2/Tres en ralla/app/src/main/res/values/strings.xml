@@ -25,4 +25,5 @@
     <string name="salir">¿Seguro que deseas salir?</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
+    <string name="reiniciar_partida">Reiniciar partida</string>
 </resources>
