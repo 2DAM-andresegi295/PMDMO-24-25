@@ -1,18 +1,24 @@
 package iesmm.pmdm.tresenralla;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
     //Representa el estado interno del juego
     //Representa el estado interno del juego
     private JuegoTresEnRaya mJuego;
+
+    private static final String TAG = "LogSistema";
 
     //Botones del layout
     private Button mBotonesTablero[];
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     //Marcadores de partidas, ganadas por jugador y ganadas por máquinas
     private MediaPlayer mJugadorMediaPlayer;
     private MediaPlayer mBackgroundPlayer;
+
     private int scoJug=0;
     private int scoMac=0;
     private int scoPar=0;
@@ -40,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     int contTur=0;
 
     Toast toast;
+    //Modulador
+    private TextToSpeech modulador;
+
 
 
     @Override
@@ -71,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Ejecución inicial de la lógica del videojuego
         mJuego=new JuegoTresEnRaya();
+        modulador = new TextToSpeech(this, this);
         comenzarJuego();
     }
 
@@ -151,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
         // 2 representar estado del juego
         if (estado==1){
             toast.makeText(MainActivity.this,R.string.result_human_wins,Toast.LENGTH_SHORT).show();
+            modulador.setPitch(1f);
+            modulador.speak(getString(R.string.enhorabnuena), TextToSpeech.QUEUE_FLUSH, null);
             scoJug++;
             scorejugador.setText(String.valueOf(scoJug));
             scoPar++;
@@ -158,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
         }else if (estado==2) {
             toast.makeText(MainActivity.this,R.string.result_computer_wins,Toast.LENGTH_SHORT).show();
+            modulador.setPitch(1f);
+            modulador.speak(getString(R.string.losiento), TextToSpeech.QUEUE_FLUSH, null);
             scoMac++;
             scoreMaquina.setText(String.valueOf(scoMac));
             scoPar++;
@@ -193,7 +208,32 @@ public class MainActivity extends AppCompatActivity {
             colocarFichaEnElTablero(JuegoTresEnRaya.JUGADOR, casilla);
         }
     }
+
     public void newGame(View boton){
+        //Ctramos una alerta
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        //Ponemos el título
+        builder.setTitle(R.string.dialogo_new_game);
+        //Ponemos el mensage
+        builder.setMessage(R.string.mensage);
+        //Si pulsa en el botón positivo resetearemos la partida
+        builder.setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                resetPartida();
+            }
+        });
+        //Si pulsa el botón negativo no hará nada
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.show();
+
+    }
+    public void resetPartida(){
         scoJug=0;
         scorejugador.setText(String.valueOf(scoJug));
         scoMac=0;
@@ -219,5 +259,10 @@ public class MainActivity extends AppCompatActivity {
 
         mJugadorMediaPlayer.release();
         mBackgroundPlayer.release();
+    }
+
+    @Override
+    public void onInit(int i) {
+
     }
 }
