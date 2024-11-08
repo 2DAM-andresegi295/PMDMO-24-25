@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Tic Tac Toe</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="puntuacion_jugador">Player:</string>
+    <string name="puntuacion_maquina" >Machine:</string>
+    <string name="puntuacion_partida" >Game:</string>
+
+    <string name="primero_jugador" >You first</string>
+    <string name="primero_maquina" >Android will go first</string>
+
+    <string name="turno_jugador">Your turn</string>
+    <string name="turno_maquina">Android shift</string>
+
+    <string name="result_tie">Draw</string>
+    <string name="result_human_wins">¡ YOU WON !</string>
+    <string name="result_computer_wins">¡ Android won !</string>
+
+    <string name="reiniciar_partida">Restart game</string>
+    <string name="dialogo_new_game">Are you sure you want to restart the game?</string>
+    <string name="mensage">Game progress will be erased</string>
+
+    <string name="cancelar">Cancel</string>
+    <string name="enhorabnuena">Congratulations</string>
+    <string name="losiento">I\'m sorry</string>
+</resources>
