@@ -1,6 +1,7 @@
 package iesmm.pmdm.pmdm_t4_02;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -21,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
 
         //Vincular lisener
         Button b = this.findViewById(R.id.boton_iniciar_sesion);
@@ -50,6 +61,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean getAccess(String username, String password) {
-        return true;
+        boolean correcto=false;
+        Resources res = getResources();
+        InputStream inputStream = res.openRawResource(R.raw.usuario);
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                String[] credneciales;
+                String linea;
+                while ((linea = bufferedReader.readLine()) != null) {
+                    credneciales = linea.split(";");
+                    if (credneciales[0].equals(username) && credneciales[1].equals(password)) {
+                        correcto = true;
+                        break;
+                    }
+                }
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        return correcto;
     }
 }
