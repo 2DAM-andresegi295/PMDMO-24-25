@@ -1,5 +1,6 @@
 package iesmm.pmdm.pmdm_t4_02;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -62,25 +65,25 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean getAccess(String username, String password) {
         boolean correcto=false;
-        Resources res = getResources();
-        InputStream inputStream = res.openRawResource(R.raw.usuario);
+        File f=this.getFileStreamPath("usuario.csv");
+        if (f.exists()){
             try {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+                InputStreamReader in= new InputStreamReader(openFileInput("usuario.csv"));
+                BufferedReader bufferedReader = new BufferedReader(in);
                 String[] credneciales;
                 String linea;
-                while ((linea = bufferedReader.readLine()) != null) {
+                while ((linea = bufferedReader.readLine()) != null&&!correcto) {
                     credneciales = linea.split(";");
                     if (credneciales[0].equals(username) && credneciales[1].equals(password)) {
                         correcto = true;
-                        break;
                     }
                 }
-
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                bufferedReader.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
 
         return correcto;
     }
