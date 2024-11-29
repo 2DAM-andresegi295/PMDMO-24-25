@@ -62,16 +62,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                int n = 0;
-                int icremento = 5;
-                while (n < MAXIMO) {
+                int contador = 0;
+                int icremento = 1;
+
+                while (contador < MAXIMO) {
                     publishProgress(icremento);
-                    n += icremento;
+                    contador += icremento;
 
                     Thread.sleep(RETARDO);
                 }
             } catch (InterruptedException e) {
-                Log.e(TAG, "Error en el incremneto");
+                Log.e(TAG, "Error en el incremento");
             } return null;
         }
 
