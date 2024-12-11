@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             while (corriendo){
                 publishProgress();
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(1000);
                     Log.i("TAREA", "Dormido");
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

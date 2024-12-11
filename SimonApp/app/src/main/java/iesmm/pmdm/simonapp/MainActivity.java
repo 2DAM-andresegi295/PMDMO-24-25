@@ -1,5 +1,6 @@
 package iesmm.pmdm.simonapp;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -7,6 +8,8 @@ import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +25,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TextToSpeech.OnInitListener {
     private TextView score;
     private int pulsaciones;
     private final Random random = new Random();
@@ -33,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     private Button boton3;
     private Button boton4;
     private ArrayList<Integer> patron = new ArrayList<>();
+    private Vibrator vibrator;
+    private TextToSpeech modulador;
+    private int retraso=1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,15 +47,45 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         score = findViewById(R.id.marcador);
+        score.setText(getString(R.string.marcador)+" 0");
+
+        vibrator=(Vibrator) getSystemService(VIBRATOR_SERVICE);
+
+        modulador = new TextToSpeech( this, this);
+
         boton1 = findViewById(R.id.boton1);
         boton2 = findViewById(R.id.boton2);
         boton3 = findViewById(R.id.boton3);
         boton4 = findViewById(R.id.boton4);
 
-        boton1.setOnClickListener(v -> revisarBoton(1));
-        boton2.setOnClickListener(v -> revisarBoton(2));
-        boton3.setOnClickListener(v -> revisarBoton(3));
-        boton4.setOnClickListener(v -> revisarBoton(4));
+        boton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                revisarBoton(1);
+            }
+        });
+
+        boton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                revisarBoton(2);
+            }
+        });
+
+        boton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                revisarBoton(3);
+            }
+        });
+
+        boton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                revisarBoton(4);
+            }
+        });
+
 
         empezarRonda();
     }
@@ -59,13 +96,24 @@ public class MainActivity extends AppCompatActivity {
         new DibujarPatronTask().execute();
     }
 
+
+
     private class DibujarPatronTask extends AsyncTask<Void, Integer, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
+            //Añadimos dificultad
+            if (patron.size()>5){
+                retraso=500;
+            }
             for (int i = 0; i < patron.size(); i++) {
-                publishProgress(patron.get(i));  // Resalta el botón actual
                 try {
-                    Thread.sleep(1000); // Esperar entre cada resaltado (duración entre botones)
+                    Thread.sleep(retraso);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                publishProgress(patron.get(i));
+                try {
+                    Thread.sleep(retraso);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -76,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(Integer... values) {
             int boton = values[0];
+            vibrator.vibrate(500); //Vibrará amtes de cada animación
             resaltarBoton(boton);
         }
     }
@@ -92,14 +141,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        boton1.postDelayed(() -> {
-            for (int i = 1; i <= 4; i++) {
-                Button button = getBoton(i);
-                if (button != null) {
-                    button.setAlpha(1.0f); // Restaurar todos los botones a su estado original
+        boton1.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 1; i <= 4; i++) {
+                    Button button = getBoton(i);
+                    if (button != null) {
+                        button.setAlpha(1.0f); // Restaurar todos los botones a su estado original
+                    }
                 }
             }
-        }, 1500);  // Tiempo de resalto de cada botón aumentado a 1500 ms
+        }, 1500);  // Tiempo de resalto de cada botón
     }
 
     private Button getBoton(int boton) {
@@ -121,15 +173,21 @@ public class MainActivity extends AppCompatActivity {
         if (boton == patron.get(pulsaciones)) {
             pulsaciones++;
             if (pulsaciones == patron.size()) {
-                Toast.makeText(this, "¡Correcto! Nueva ronda", Toast.LENGTH_SHORT).show();
-                score.setText("Marcador: " + patron.size());
+                modulador.speak(getString(R.string.correcto), TextToSpeech.QUEUE_FLUSH, null);
+                Toast.makeText(this, getString(R.string.correcto) , Toast.LENGTH_SHORT).show();
+                score.setText(getString(R.string.marcador) +" "+ patron.size());
                 empezarRonda();
             }
         } else {
-            Toast.makeText(this, "¡Error! Inténtalo de nuevo", Toast.LENGTH_SHORT).show();
+            modulador.speak(getString(R.string.incorrecto), TextToSpeech.QUEUE_FLUSH, null);
+            Toast.makeText(this,getString(R.string.incorrecto) , Toast.LENGTH_SHORT).show();
             patron.clear();
-            score.setText("Marcador: " + patron.size());
+            score.setText(getString(R.string.marcador) +" "+ patron.size());
             empezarRonda();
         }
+    }
+    @Override
+    public void onInit(int i) {
+        modulador.setLanguage(Locale.getDefault());
     }
 }
