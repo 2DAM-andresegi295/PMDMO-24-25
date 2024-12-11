@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SimonApp</string>
+    <string name="dialo">Replica la secuencia</string>
+    <string name="marcador">Marcador:</string>
+    <string name="correcto">¡Correcto! Nueva ronda</string>
+    <string name="incorrecto">¡Error! Inténtalo de nuevo</string>
+</resources>
