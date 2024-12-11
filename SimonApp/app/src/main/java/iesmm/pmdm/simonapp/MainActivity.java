@@ -27,28 +27,23 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     private TextView score;
     private int pulsaciones;
-    private int aleatorio;
-    private final Random random=new Random();
+    private final Random random = new Random();
     private Button boton1;
     private Button boton2;
     private Button boton3;
     private Button boton4;
-    private String TAG="TAREA";
-    private ImageButton pause;
-    private boolean corriendo=false;
     private ArrayList<Integer> patron = new ArrayList<>();
-    private Handler handler=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        score=findViewById(R.id.marcador);
-        boton1=findViewById(R.id.boton1);
-        boton2=findViewById(R.id.boton2);
-        boton3=findViewById(R.id.boton3);
-        boton4=findViewById(R.id.boton4);
+        score = findViewById(R.id.marcador);
+        boton1 = findViewById(R.id.boton1);
+        boton2 = findViewById(R.id.boton2);
+        boton3 = findViewById(R.id.boton3);
+        boton4 = findViewById(R.id.boton4);
 
         boton1.setOnClickListener(v -> revisarBoton(1));
         boton2.setOnClickListener(v -> revisarBoton(2));
@@ -57,42 +52,56 @@ public class MainActivity extends AppCompatActivity {
 
         empezarRonda();
     }
-    private void empezarRonda(){
-        patron.add(random.nextInt(4)+1);
-        pulsaciones=0;
-        dibujarPatron();
+
+    private void empezarRonda() {
+        patron.add(random.nextInt(4) + 1);
+        pulsaciones = 0;
+        new DibujarPatronTask().execute();
     }
-    private void dibujarPatron(){
-        handler.postDelayed(() -> {
+
+    private class DibujarPatronTask extends AsyncTask<Void, Integer, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
             for (int i = 0; i < patron.size(); i++) {
-                int boton=patron.get(i);
-                handler.postDelayed(()-> resaltarBoton(boton),i*1000);
+                publishProgress(patron.get(i));  // Resalta el botón actual
+                try {
+                    Thread.sleep(1000); // Esperar entre cada resaltado (duración entre botones)
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
-        },500);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            int boton = values[0];
+            resaltarBoton(boton);
+        }
     }
+
     private void resaltarBoton(int boton) {
-        // Resalta el botón actual y oscurece los demás
         for (int i = 1; i <= 4; i++) {
             Button button = getBoton(i);
             if (button != null) {
                 if (i == boton) {
-                    button.setAlpha(1.f); // Resaltar el botón seleccionado
+                    button.setAlpha(1.0f); // Resaltar el botón seleccionado
                 } else {
                     button.setAlpha(0.1f); // Oscurecer los demás
                 }
             }
         }
 
-        // Después de un tiempo, restaurar todos los botones
-        handler.postDelayed(() -> {
+        boton1.postDelayed(() -> {
             for (int i = 1; i <= 4; i++) {
                 Button button = getBoton(i);
                 if (button != null) {
                     button.setAlpha(1.0f); // Restaurar todos los botones a su estado original
                 }
             }
-        }, 2000); // Tiempo que dura el resaltado
+        }, 1500);  // Tiempo de resalto de cada botón aumentado a 1500 ms
     }
+
     private Button getBoton(int boton) {
         switch (boton) {
             case 1:
@@ -109,21 +118,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void revisarBoton(int boton) {
-        if (boton==patron.get(pulsaciones)){
+        if (boton == patron.get(pulsaciones)) {
             pulsaciones++;
-            if (pulsaciones==patron.size()){
+            if (pulsaciones == patron.size()) {
                 Toast.makeText(this, "¡Correcto! Nueva ronda", Toast.LENGTH_SHORT).show();
-                score.setText("Marcador: "+patron.size());
+                score.setText("Marcador: " + patron.size());
                 empezarRonda();
             }
-        }else {
+        } else {
             Toast.makeText(this, "¡Error! Inténtalo de nuevo", Toast.LENGTH_SHORT).show();
-            handler.postDelayed(() -> {
-                patron.clear();
-                score.setText("Marcador: "+patron.size());
-                empezarRonda();
-            }, 1000);
+            patron.clear();
+            score.setText("Marcador: " + patron.size());
+            empezarRonda();
         }
-
     }
 }
