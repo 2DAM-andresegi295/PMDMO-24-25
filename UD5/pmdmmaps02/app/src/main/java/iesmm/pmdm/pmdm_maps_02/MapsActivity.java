@@ -1,19 +1,24 @@
-package iesmm.pmdm.pmdm_maps_01;
+package iesmm.pmdm.pmdm_maps_02;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import iesmm.pmdm.pmdm_maps_01.databinding.ActivityMapsBinding;
+import iesmm.pmdm.pmdm_maps_02.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener, GoogleMap.OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private ActivityMapsBinding binding;
@@ -44,11 +49,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        mMap.setOnMapClickListener(this);
+        mMap.setOnMarkerClickListener(this);
+        mMap.setOnInfoWindowClickListener(this);
+        // Add a marker in Sydney and move the camera
         LatLng cortegana = new LatLng(37.9101127, -6.8321521);
         mMap.addMarker(new MarkerOptions().position(cortegana).title("Marker in Cortegana"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(cortegana));
 
         LatLng mediterraneo = new LatLng(37.9101127, 6.8321521);
         mMap.addMarker(new MarkerOptions().position(mediterraneo).title("Marker in Mediterraneo"));
+
+        mMap.addMarker(new MarkerOptions().position(new LatLng(37.2708661,-6.96029))
+                .title("Huelva")
+                .snippet("Mensaje")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mymarker)));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(43.388283,4.1140928)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.388283,4.1140928),8),5000,null);
+    }
+
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+    }
+
+    @Override
+    public boolean onMarkerClick(@NonNull Marker marker) {
+        Toast.makeText(this,marker.getTitle(),Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    @Override
+    public void onInfoWindowClick(@NonNull Marker marker) {
+
     }
 }
