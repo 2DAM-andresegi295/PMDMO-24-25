@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">pmdm-t4-users</string>
+    <string name="titulo">Inicio de sesión</string>
+    <string name="usuario">Email</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="botonconfirmar">Confirmar</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
