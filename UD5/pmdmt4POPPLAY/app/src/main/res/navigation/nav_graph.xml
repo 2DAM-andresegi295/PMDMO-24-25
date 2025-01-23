@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/pantalla1Fragment">
+
+    <fragment
+        android:id="@+id/pantalla1Fragment"
+        android:name="iesmm.pmdm.pmdm_t4_popplay.Pantalla1Fragment"
+        android:label="fragment_pantalla1"
+        tools:layout="@layout/fragment_pantalla1" >
+        <action
+            android:id="@+id/action_pantalla1Fragment_to_pantalla2Fragmnet"
+            app:destination="@id/pantalla2Fragmnet"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/pantalla2Fragmnet"
+        android:name="iesmm.pmdm.pmdm_t4_popplay.Pantalla2Fragmnet"
+        android:label="fragment_pantalla2_fragmnet"
+        tools:layout="@layout/fragment_pantalla2_fragmnet" >
+        <action
+            android:id="@+id/action_pantalla2Fragmnet_to_pantalla3Fragment"
+            app:destination="@id/pantalla3Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/pantalla3Fragment"
+        android:name="iesmm.pmdm.pmdm_t4_popplay.Pantalla3Fragment"
+        android:label="fragment_pantalla3"
+        tools:layout="@layout/fragment_pantalla3" >
+        <action
+            android:id="@+id/action_pantalla3Fragment_to_pantalla4Fragment"
+            app:destination="@id/pantalla4Fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+    <fragment
+        android:id="@+id/pantalla4Fragment"
+        android:name="iesmm.pmdm.pmdm_t4_popplay.Pantalla4Fragment"
+        android:label="fragment_pantalla4"
+        tools:layout="@layout/fragment_pantalla4" />
+</navigation>
